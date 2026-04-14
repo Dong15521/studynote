@@ -3,297 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小景的研读文件夹</title>
+    <title>小景的学术空间</title>
     <style>
         :root {
-            --primary-green: #e9f5e9; /* 极浅嫩绿背景 */
-            --accent-green: #4CAF50;  /* 核心嫩绿色 */
+            --primary-green: #f2f9f2;
+            --accent-green: #4CAF50;
             --glass-bg: rgba(255, 255, 255, 0.7);
             --text-main: #333;
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #e9f5e9 100%);
             color: var(--text-main);
             margin: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
             min-height: 100vh;
         }
 
-        /* 容器布局 */
-        #app {
-            width: 90%;
-            max-width: 800px;
-            padding: 40px 20px;
-        }
+        #app { width: 100%; max-width: 1000px; }
 
-        /* 欢迎语样式 */
-        .greeting {
-            text-align: center;
-            margin-bottom: 50px;
-        }
+        /* 顶部欢迎语 */
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-weight: 300; font-size: 2.2rem; color: var(--accent-green); margin: 10px 0; }
+        .header p { color: #888; letter-spacing: 1px; }
 
-        .greeting h1 {
-            font-weight: 300;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: var(--accent-green);
-        }
+        /* 布局：左边文献，右边碎片 */
+        .main-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
+        @media (max-width: 768px) { .main-layout { grid-template-columns: 1fr; } }
 
-        .greeting p {
-            font-size: 1.1rem;
-            color: #666;
-            letter-spacing: 2px;
-        }
-
-        /* 毛玻璃卡片风按钮 */
-        .glass-btn {
+        /* 通用卡片样式 */
+        .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.3);
             box-shadow: var(--shadow);
-            border-radius: 15px;
-            padding: 20px 40px;
-            font-size: 1.2rem;
-            color: var(--accent-green);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: block;
-            margin: 0 auto;
-            border: none;
-            outline: none;
-        }
-
-        .glass-btn:hover {
-            transform: translateY(-3px);
-            background: var(--accent-green);
-            color: white;
-        }
-
-        /* 仪表盘列表 */
-        .dashboard {
-            margin-top: 40px;
-            display: grid;
-            gap: 15px;
-        }
-
-        .note-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(4px);
             padding: 20px;
+        }
+
+        h2 { font-weight: 400; font-size: 1.1rem; border-bottom: 2px solid var(--accent-green); display: inline-block; padding-bottom: 5px; margin-bottom: 20px; }
+
+        /* 文献列表样式 */
+        .note-item {
+            background: white;
+            padding: 15px;
             border-radius: 12px;
-            border-left: 5px solid var(--accent-green);
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.2s;
         }
+        .note-item:hover { transform: translateX(5px); }
 
-        /* 编辑器样式 */
-        .editor-view {
-            display: none; /* 默认隐藏，点击后显示 */
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--accent-green);
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
+        /* 碎片/便利贴样式 */
+        .fragment-input-area { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .fragment-input-area input { padding: 10px; border-radius: 8px; border: 1px solid #ddd; outline: none; }
+        
+        .fragments-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .fragment-card {
+            background: #fff;
             padding: 12px;
-            border: 1px solid #eee;
-            border-radius: 8px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-green);
+            font-size: 0.9rem;
+            position: relative;
+        }
+        .fragment-card b { color: var(--accent-green); display: block; margin-bottom: 4px; }
+        .delete-btn { color: #ccc; cursor: pointer; font-size: 0.8rem; position: absolute; top: 10px; right: 10px; }
+        .delete-btn:hover { color: #ff6b6b; }
+
+        /* 按钮样式 */
+        .btn-main {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            cursor: pointer;
             font-size: 1rem;
-            box-sizing: border-box;
-            background: #fafafa;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: 0.3s;
         }
+        .btn-main:hover { opacity: 0.9; transform: scale(1.02); }
 
-        .form-group textarea {
-            height: 100px;
-            resize: vertical;
-        }
+        /* 编辑器视图 (与之前逻辑一致) */
+        #editorView { display: none; background: white; padding: 40px; border-radius: 20px; box-shadow: var(--shadow); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--accent-green); }
+        .form-group textarea, .form-group input { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box; }
+        .editor-btns { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-save { background: var(--accent-green); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        .btn-back { background: #eee; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
 
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 30px;
-        }
-
-        .save-btn { background: var(--accent-green); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
-        .export-btn { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
-        .back-btn { background: #ccc; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
-
-        /* 打印优化 (PDF导出用) */
-        @media print {
-            .button-group, .greeting, .glass-btn { display: none !important; }
-            body { background: white; }
-            .editor-view { display: block !important; box-shadow: none; padding: 0; }
-        }
+        /* 打印/PDF 隐藏不需要的部分 */
+        @media print { .header, .main-layout, .editor-btns { display: none !important; } #editorView { display: block !important; } }
     </style>
 </head>
 <body>
 
 <div id="app">
     <div id="homeView">
-        <div class="greeting">
+        <div class="header">
             <h1>Hi，小景！</h1>
             <p>行在今日，实事求是。</p>
         </div>
-        
-        <button class="glass-btn" onclick="showEditor()">+ 点击研读新文献</button>
 
-        <div class="dashboard" id="noteList">
+        <div class="main-layout">
+            <div class="glass-card">
+                <h2>文献文件夹</h2>
+                <button class="btn-main" onclick="openEditor()">+ 点击研读新文献</button>
+                <div id="noteList">
+                    </div>
             </div>
+
+            <div class="glass-card">
+                <h2>碎片实验室 (词汇/概念)</h2>
+                <div class="fragment-input-area">
+                    <input type="text" id="fragTitle" placeholder="概念名称 (如: 沉没成本)">
+                    <input type="text" id="fragContent" placeholder="一句话解释...">
+                    <button class="btn-save" onclick="addFragment()">顺手记下</button>
+                </div>
+                <div class="fragments-grid" id="fragmentList">
+                    </div>
+            </div>
+        </div>
     </div>
 
-    <div id="editorView" class="editor-view">
-        <h2 style="font-weight: 300; text-align: center;">学术研读笔记</h2>
-        <hr style="border: 0.5px solid #eee; margin-bottom: 30px;">
+    <div id="editorView">
+        <h2 id="editHeader">新文献研读</h2>
+        <div class="form-group"><label>文献标题</label><input type="text" id="title"></div>
+        <div class="form-group"><label>【研究问题】</label><textarea id="q1"></textarea></div>
+        <div class="form-group"><label>【看似显然 vs 实际发现】</label><textarea id="q2"></textarea></div>
+        <div class="form-group"><label>【关键机制】</label><textarea id="q3"></textarea></div>
+        <div class="form-group"><label>【方法亮点】</label><textarea id="q4"></textarea></div>
+        <div class="form-group"><label>【我的疑问/延伸思考】</label><textarea id="q5"></textarea></div>
+        <div class="form-group"><label>倒逼输出 (小红书/感悟)</label><textarea id="output" style="height:120px; border:1px dashed #4CAF50;"></textarea></div>
         
-        <div class="form-group">
-            <label>文献标题</label>
-            <input type="text" id="title" placeholder="输入文章标题...">
-        </div>
-        <div class="form-group">
-            <label>分类/标签</label>
-            <input type="text" id="tag" placeholder="如：经济学、社会学...">
-        </div>
-
-        <h3 style="color: #888; font-size: 0.9rem; text-transform: uppercase;">一、结构化解读</h3>
-        <div class="form-group">
-            <label>【研究问题】</label>
-            <textarea id="q1" placeholder="一句话说清..."></textarea>
-        </div>
-        <div class="form-group">
-            <label>【看似显然 vs 实际发现】</label>
-            <textarea id="q2" placeholder="直觉认为：____&#10;本文发现：____"></textarea>
-        </div>
-        <div class="form-group">
-            <label>【关键机制】</label>
-            <textarea id="q3"></textarea>
-        </div>
-        <div class="form-group">
-            <label>【方法亮点】</label>
-            <textarea id="q4"></textarea>
-        </div>
-        <div class="form-group">
-            <label>【我的疑问或延伸思考】</label>
-            <textarea id="q5"></textarea>
-        </div>
-
-        <h3 style="color: #888; font-size: 0.9rem; text-transform: uppercase;">二、倒逼输出 (小红书/复盘)</h3>
-        <div class="form-group">
-            <label>我的总结感悟</label>
-            <textarea id="output" style="height: 150px; border: 1px dashed var(--accent-green);" placeholder="1. 打破直觉的发现是什么？&#10;2. 研究者怎么证明的？&#10;3. 和我有什么关系？"></textarea>
-        </div>
-
-        <div class="button-group">
-            <button class="save-btn" onclick="saveNote()">保存到浏览器</button>
-            <button class="export-btn" onclick="exportPDF()">导出为 PDF</button>
-            <button class="export-btn" onclick="exportWord()">导出 Word</button>
-            <button class="back-btn" onclick="showHome()">返回主页</button>
+        <div class="editor-btns">
+            <button class="btn-save" onclick="saveNote()">保存并归档</button>
+            <button class="btn-back" onclick="window.print()">导出 PDF</button>
+            <button class="btn-back" onclick="closeEditor()">返回</button>
         </div>
     </div>
 </div>
 
 <script>
-    // 逻辑：切换视图
-    function showEditor() {
+    // --- 文献逻辑 ---
+    function openEditor() {
         document.getElementById('homeView').style.display = 'none';
         document.getElementById('editorView').style.display = 'block';
     }
 
-    function showHome() {
+    function closeEditor() {
         document.getElementById('homeView').style.display = 'block';
         document.getElementById('editorView').style.display = 'none';
-        renderDashboard();
     }
 
-    // 逻辑：保存数据
     function saveNote() {
         const note = {
             id: Date.now(),
-            title: document.getElementById('title').value || '未命名文献',
-            tag: document.getElementById('tag').value || '默认',
-            content: {
-                q1: document.getElementById('q1').value,
+            title: document.getElementById('title').value || '无标题',
+            content: { 
+                q1: document.getElementById('q1').value, 
                 q2: document.getElementById('q2').value,
                 q3: document.getElementById('q3').value,
                 q4: document.getElementById('q4').value,
                 q5: document.getElementById('q5').value,
                 output: document.getElementById('output').value
             },
-            time: new Date().toLocaleDateString()
+            date: new Date().toLocaleDateString()
         };
-
         let notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
-        notes.push(note);
+        notes.unshift(note);
         localStorage.setItem('myAcademicNotes', JSON.stringify(notes));
-        alert('保存成功！');
-        showHome();
+        renderAll();
+        closeEditor();
     }
 
-    // 逻辑：渲染仪表盘
-    function renderDashboard() {
-        const list = document.getElementById('noteList');
-        const notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
-        list.innerHTML = '';
+    // --- 碎片逻辑 ---
+    function addFragment() {
+        const t = document.getElementById('fragTitle').value;
+        const c = document.getElementById('fragContent').value;
+        if(!t) return alert("请输入概念名称");
         
-        notes.forEach(note => {
-            const card = document.createElement('div');
-            card.className = 'note-card';
-            card.innerHTML = `
-                <div>
-                    <strong>${note.title}</strong><br>
-                    <small style="color: #888;">${note.time} | 标签: ${note.tag}</small>
-                </div>
-                <button onclick="deleteNote(${note.id})" style="color: #ff4d4d; border:none; background:none; cursor:pointer;">删除</button>
-            `;
-            list.appendChild(card);
-        });
+        let frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
+        frags.unshift({ id: Date.now(), title: t, content: c });
+        localStorage.setItem('myAcademicFrags', JSON.stringify(frags));
+        
+        document.getElementById('fragTitle').value = '';
+        document.getElementById('fragContent').value = '';
+        renderAll();
     }
 
-    // 逻辑：导出 PDF
-    function exportPDF() {
-        window.print(); // 调用系统打印，可直接保存为PDF，样式最完美
-    }
-
-    // 逻辑：导出 Word (基础实现)
-    function exportWord() {
-        const title = document.getElementById('title').value || '研读笔记';
-        const content = document.getElementById('editorView').innerText;
-        const blob = new Blob(['\ufeff' + content], { type: 'application/msword' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${title}.doc`;
-        link.click();
+    function deleteFrag(id) {
+        let frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
+        frags = frags.filter(f => f.id !== id);
+        localStorage.setItem('myAcademicFrags', JSON.stringify(frags));
+        renderAll();
     }
 
     function deleteNote(id) {
+        if(!confirm("确定删除这篇笔记吗？")) return;
         let notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
         notes = notes.filter(n => n.id !== id);
         localStorage.setItem('myAcademicNotes', JSON.stringify(notes));
-        renderDashboard();
+        renderAll();
     }
 
-    // 初始化加载
-    window.onload = renderDashboard;
-</script>
+    // --- 渲染 ---
+    function renderAll() {
+        // 渲染文献
+        const noteList = document.getElementById('noteList');
+        const notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
+        noteList.innerHTML = notes.map(n => `
+            <div class="note-item">
+                <div><b>${n.title}</b><br><small style="color:#aaa">${n.date}</small></div>
+                <span onclick="deleteNote(${n.id})" style="color:#ccc; cursor:pointer">删除</span>
+            </div>
+        `).join('');
 
+        // 渲染碎片
+        const fragList = document.getElementById('fragmentList');
+        const frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
+        fragList.innerHTML = frags.map(f => `
+            <div class="fragment-card">
+                <span class="delete-btn" onclick="deleteFrag(${f.id})">×</span>
+                <b>${f.title}</b>
+                <div>${f.content}</div>
+            </div>
+        `).join('');
+    }
+
+    window.onload = renderAll;
+</script>
 </body>
 </html>
