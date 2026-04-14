@@ -13,7 +13,6 @@
             --text-main: #2c3e50;
             --shadow: 0 10px 30px rgba(76, 175, 80, 0.08);
             
-            /* 按钮渐变色库 */
             --btn-green: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
             --btn-teal: linear-gradient(135deg, #26a69a 0%, #00897b 100%);
             --btn-gray: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
@@ -30,15 +29,13 @@
             min-height: 100vh;
         }
 
-        #app { width: 100%; max-width: 1000px; }
+        #app { width: 100%; max-width: 1100px; } /* 整体变宽了一点 */
 
         /* 顶部欢迎语 */
         .header { text-align: center; margin-bottom: 40px; }
         .header h1 { font-weight: 300; font-size: 2.2rem; color: var(--accent-green-dark); margin: 10px 0; }
-        
-        /* 座右铭专属高级样式 */
         .header p.motto { 
-            font-family: "Songti SC", "STSong", serif; /* 使用宋体类衬线字体增加文艺/学术感 */
+            font-family: "Songti SC", "STSong", serif;
             font-size: 1.6rem; 
             font-weight: bold;
             letter-spacing: 4px;
@@ -48,11 +45,11 @@
             margin-top: 5px;
         }
 
-        /* 布局：左边文献，右边碎片 */
-        .main-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
+        /* 布局 */
+        .main-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 30px; }
         @media (max-width: 768px) { .main-layout { grid-template-columns: 1fr; } }
 
-        /* 通用卡片样式 */
+        /* 卡片 */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -65,7 +62,7 @@
 
         h2 { font-weight: 500; font-size: 1.2rem; border-bottom: 2px solid rgba(76, 175, 80, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 20px; color: var(--accent-green-dark); }
 
-        /* 文献列表样式 */
+        /* 文献列表 */
         .note-item {
             background: rgba(255, 255, 255, 0.9);
             padding: 18px;
@@ -80,11 +77,18 @@
         }
         .note-item:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(76, 175, 80, 0.1); border-left: 4px solid var(--accent-green); }
 
-        /* 碎片/便利贴样式 */
+        /* 碎片输入区 */
         .fragment-input-area { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
-        .fragment-input-area input { padding: 12px; border-radius: 10px; border: 1px solid #e0e0e0; outline: none; background: rgba(255,255,255,0.8); transition: 0.3s; }
-        .fragment-input-area input:focus { border-color: var(--accent-green); box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1); }
+        .fragment-input-area input, .fragment-input-area textarea { 
+            padding: 12px; border-radius: 10px; border: 1px solid #e0e0e0; outline: none; background: rgba(255,255,255,0.8); transition: 0.3s; font-family: inherit;
+        }
+        .fragment-input-area textarea {
+            resize: vertical; /* 允许垂直拉伸 */
+            min-height: 80px;
+        }
+        .fragment-input-area input:focus, .fragment-input-area textarea:focus { border-color: var(--accent-green); box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1); }
         
+        /* 碎片列表 */
         .fragments-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
         .fragment-card {
             background: rgba(255, 255, 255, 0.9);
@@ -94,51 +98,38 @@
             font-size: 0.95rem;
             position: relative;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            white-space: pre-wrap; /* 保持换行格式 */
         }
         .fragment-card b { color: var(--accent-green-dark); display: block; margin-bottom: 6px; font-size: 1.05rem; }
         
-        /* 动作按钮文本 */
         .action-text { color: #888; cursor: pointer; font-size: 0.85rem; margin-left: 10px; transition: 0.2s; }
         .action-text:hover { color: var(--accent-green); }
         .action-text.delete:hover { color: #ff5252; }
-        
         .frag-actions { position: absolute; top: 12px; right: 12px; }
 
-        /* 漂亮的渐变按钮 */
-        .btn-main {
-            background: var(--btn-green);
-            color: white;
-            border: none;
-            padding: 16px 30px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 500;
-            width: 100%;
-            margin-bottom: 25px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
+        /* 按钮 */
+        .btn-main { background: var(--btn-green); color: white; border: none; padding: 16px 30px; border-radius: 15px; cursor: pointer; font-size: 1.1rem; font-weight: 500; width: 100%; margin-bottom: 25px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3); }
         .btn-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4); }
-
         .btn-save { background: var(--btn-green); color: white; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 500; transition: 0.3s; box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2); }
         .btn-save:hover { opacity: 0.9; transform: translateY(-1px); }
-        
         .btn-export { background: var(--btn-teal); color: white; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 500; transition: 0.3s; box-shadow: 0 4px 10px rgba(38, 166, 154, 0.2); }
         .btn-export:hover { opacity: 0.9; transform: translateY(-1px); }
-
         .btn-back { background: var(--btn-gray); color: #333; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 500; transition: 0.3s; }
         .btn-back:hover { opacity: 0.9; }
 
         /* 编辑器视图 */
         #editorView { display: none; background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 20px; box-shadow: var(--shadow); backdrop-filter: blur(10px); }
+        /* 将基础信息做成网格布局，更省空间 */
+        .basic-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 22px; }
+        @media (max-width: 600px) { .basic-info-grid { grid-template-columns: 1fr; } }
+        
         .form-group { margin-bottom: 22px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--accent-green-dark); font-size: 0.95rem; }
         .form-group textarea, .form-group input { width: 100%; padding: 15px; border: 1px solid #e0e0e0; border-radius: 12px; box-sizing: border-box; background: #fafafa; font-family: inherit; transition: 0.3s; }
+        .form-group textarea { resize: vertical; min-height: 100px; } /* 允许编辑器里的框拉伸 */
         .form-group textarea:focus, .form-group input:focus { outline: none; border-color: var(--accent-green); background: #fff; box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1); }
         .editor-btns { display: flex; gap: 15px; margin-top: 30px; }
 
-        /* 打印优化 */
         @media print { .header, .main-layout, .editor-btns { display: none !important; } #editorView { display: block !important; background: none; box-shadow: none; } }
     </style>
 </head>
@@ -155,19 +146,17 @@
             <div class="glass-card">
                 <h2>文献文件夹</h2>
                 <button class="btn-main" onclick="openEditor(null)">+ 点击研读新文献</button>
-                <div id="noteList">
-                    </div>
+                <div id="noteList"></div>
             </div>
 
             <div class="glass-card">
                 <h2>碎片实验室</h2>
                 <div class="fragment-input-area">
                     <input type="text" id="fragTitle" placeholder="概念名称 (如: 沉没成本)">
-                    <input type="text" id="fragContent" placeholder="一句话解释...">
+                    <textarea id="fragContent" placeholder="在此输入解释... (右下角可拖拽拉伸框，支持换行)"></textarea>
                     <button class="btn-save" id="saveFragBtn" onclick="saveFragment()">顺手记下</button>
                 </div>
-                <div class="fragments-grid" id="fragmentList">
-                    </div>
+                <div class="fragments-grid" id="fragmentList"></div>
             </div>
         </div>
     </div>
@@ -176,12 +165,22 @@
         <h2 id="editHeader" style="font-size: 1.8rem; text-align: center; border: none; margin-bottom: 30px;">新文献研读</h2>
         
         <div class="form-group"><label>文献标题</label><input type="text" id="title" placeholder="输入论文或文章标题..."></div>
-        <div class="form-group"><label>【研究问题】</label><textarea id="q1" rows="2" placeholder="一句话说清这篇论文在研究什么..."></textarea></div>
-        <div class="form-group"><label>【看似显然 vs 实际发现】</label><textarea id="q2" rows="3" placeholder="直觉上我们认为：...&#10;本文实际发现：..."></textarea></div>
-        <div class="form-group"><label>【关键机制】</label><textarea id="q3" rows="3" placeholder="它是通过什么路径起作用的？"></textarea></div>
-        <div class="form-group"><label>【方法亮点】</label><textarea id="q4" rows="3" placeholder="数据或实验设计有什么巧妙之处？"></textarea></div>
-        <div class="form-group"><label>【我的疑问/延伸思考】</label><textarea id="q5" rows="2" placeholder="下一步可以研究什么？"></textarea></div>
-        <div class="form-group"><label>倒逼输出 (小红书/感悟)</label><textarea id="output" style="height:120px; border: 2px dashed #81c784; background: #f1f8e9;" placeholder="用自己的话总结，准备发出的文案..."></textarea></div>
+        
+        <div class="basic-info-grid">
+            <div><label>文献作者</label><input type="text" id="author" placeholder="输入作者..."></div>
+            <div><label>阅读时间</label><input type="date" id="readDate"></div>
+        </div>
+
+        <div class="form-group"><label>【研究问题】</label><textarea id="q1" placeholder="一句话说清这篇论文在研究什么..."></textarea></div>
+        <div class="form-group"><label>【看似显然 vs 实际发现】</label><textarea id="q2" placeholder="直觉上我们认为：...&#10;本文实际发现：..."></textarea></div>
+        <div class="form-group"><label>【关键机制】</label><textarea id="q3" placeholder="它是通过什么路径起作用的？"></textarea></div>
+        <div class="form-group"><label>【方法亮点】</label><textarea id="q4" placeholder="数据或实验设计有什么巧妙之处？"></textarea></div>
+        <div class="form-group"><label>【我的疑问/延伸思考】</label><textarea id="q5" placeholder="下一步可以研究什么？"></textarea></div>
+        
+        <div class="form-group">
+            <label>倒逼输出 (小红书/感悟)</label>
+            <textarea id="output" style="height:150px; border: 2px dashed #81c784; background: #f1f8e9;" placeholder="第一句：打破直觉的发现是什么？&#10;第二句：研究者怎么证明的？（一句话说清方法亮点）&#10;第三句：和我有什么关系？"></textarea>
+        </div>
         
         <div class="editor-btns">
             <button class="btn-save" onclick="saveNote()">保存并归档</button>
@@ -192,24 +191,24 @@
 </div>
 
 <script>
-    // === 状态记忆变量 ===
     let editingNoteId = null; 
     let editingFragId = null;
 
-    // ================== 文献库逻辑 ==================
-
-    // 打开编辑器 (如果传了 ID，就是编辑；如果不传 null，就是新建)
     function openEditor(noteId = null) {
         editingNoteId = noteId; 
         const editHeader = document.getElementById('editHeader');
+        
+        // 自动将阅读时间默认为今天
+        const today = new Date().toISOString().split('T')[0];
 
         if (noteId) {
-            // 【编辑模式】把旧数据取出来，填到框框里
             editHeader.innerText = "编辑文献研读";
             const notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
             const note = notes.find(n => n.id === noteId);
             if (note) {
                 document.getElementById('title').value = note.title;
+                document.getElementById('author').value = note.author || ''; // 新字段防空
+                document.getElementById('readDate').value = note.readDate || today; // 新字段防空
                 document.getElementById('q1').value = note.content.q1;
                 document.getElementById('q2').value = note.content.q2;
                 document.getElementById('q3').value = note.content.q3;
@@ -218,9 +217,10 @@
                 document.getElementById('output').value = note.content.output;
             }
         } else {
-            // 【新建模式】清空所有框框
             editHeader.innerText = "新文献研读";
             document.getElementById('title').value = '';
+            document.getElementById('author').value = '';
+            document.getElementById('readDate').value = today; // 默认今天
             document.getElementById('q1').value = '';
             document.getElementById('q2').value = '';
             document.getElementById('q3').value = '';
@@ -243,6 +243,8 @@
         
         const noteData = {
             title: document.getElementById('title').value || '无标题文献',
+            author: document.getElementById('author').value || '未知作者',
+            readDate: document.getElementById('readDate').value,
             content: { 
                 q1: document.getElementById('q1').value, 
                 q2: document.getElementById('q2').value,
@@ -254,15 +256,14 @@
         };
 
         if (editingNoteId) {
-            // 更新现有笔记
             const index = notes.findIndex(n => n.id === editingNoteId);
             if(index !== -1) {
                 notes[index].title = noteData.title;
+                notes[index].author = noteData.author;
+                notes[index].readDate = noteData.readDate;
                 notes[index].content = noteData.content;
-                // 注意：这里我们保留了原来的 id 和创建时间(date)
             }
         } else {
-            // 创建新笔记
             noteData.id = Date.now();
             noteData.date = new Date().toLocaleDateString();
             notes.unshift(noteData);
@@ -274,14 +275,13 @@
     }
 
     function deleteNote(id) {
-        if(!confirm("确定要删除这篇文献记录吗？")) return;
+        // 【防误删弹窗】
+        if(!confirm("⚠️ 确定要永久删除这篇文献记录吗？")) return;
         let notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
         notes = notes.filter(n => n.id !== id);
         localStorage.setItem('myAcademicNotes', JSON.stringify(notes));
         renderAll();
     }
-
-    // ================== 碎片库逻辑 ==================
 
     function saveFragment() {
         const titleVal = document.getElementById('fragTitle').value;
@@ -291,22 +291,19 @@
         let frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
 
         if (editingFragId) {
-            // 更新碎片
             const index = frags.findIndex(f => f.id === editingFragId);
             if(index !== -1) {
                 frags[index].title = titleVal;
                 frags[index].content = contentVal;
             }
-            editingFragId = null; // 重置状态
+            editingFragId = null;
             document.getElementById('saveFragBtn').innerText = "顺手记下";
         } else {
-            // 新增碎片
             frags.unshift({ id: Date.now(), title: titleVal, content: contentVal });
         }
         
         localStorage.setItem('myAcademicFrags', JSON.stringify(frags));
         
-        // 清空输入框
         document.getElementById('fragTitle').value = '';
         document.getElementById('fragContent').value = '';
         renderAll();
@@ -318,28 +315,31 @@
         if (frag) {
             document.getElementById('fragTitle').value = frag.title;
             document.getElementById('fragContent').value = frag.content;
-            editingFragId = id; // 记住当前正在编辑的碎片
+            editingFragId = id; 
             document.getElementById('saveFragBtn').innerText = "更新保存";
         }
     }
 
     function deleteFrag(id) {
+        // 【防误删弹窗】
+        if(!confirm("⚠️ 确定要删除这个概念碎片吗？")) return;
         let frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
         frags = frags.filter(f => f.id !== id);
         localStorage.setItem('myAcademicFrags', JSON.stringify(frags));
         renderAll();
     }
 
-    // ================== 页面渲染逻辑 ==================
     function renderAll() {
-        // 渲染文献
         const noteList = document.getElementById('noteList');
         const notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
         noteList.innerHTML = notes.map(n => `
             <div class="note-item">
                 <div>
                     <b style="font-size: 1.1rem; color: #2E7D32;">${n.title}</b><br>
-                    <small style="color:#888; font-size: 0.85rem;">记录于 ${n.date}</small>
+                    <small style="color:#888; font-size: 0.85rem;">
+                        ${n.author ? n.author + ' | ' : ''} 
+                        阅读于 ${n.readDate || n.date}
+                    </small>
                 </div>
                 <div>
                     <span class="action-text" onclick="openEditor(${n.id})">编辑</span>
@@ -348,7 +348,6 @@
             </div>
         `).join('');
 
-        // 渲染碎片
         const fragList = document.getElementById('fragmentList');
         const frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
         fragList.innerHTML = frags.map(f => `
@@ -363,7 +362,6 @@
         `).join('');
     }
 
-    // 页面加载时自动运行渲染
     window.onload = renderAll;
 </script>
 </body>
