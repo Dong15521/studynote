@@ -17,7 +17,6 @@
             --btn-teal: linear-gradient(135deg, #26a69a 0%, #00897b 100%);
             --btn-gray: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
             
-            /* 学术感宋体字体栈 */
             --font-serif: "Songti SC", "STSong", "SimSun", "Libre Baskerville", serif;
             --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
         }
@@ -35,7 +34,6 @@
 
         #app { width: 100%; max-width: 1100px; }
 
-        /* 顶部欢迎语 */
         .header { text-align: center; margin-bottom: 40px; }
         .header h1 { font-weight: 300; font-size: 2.2rem; color: var(--accent-green-dark); margin: 10px 0; }
         .header p.motto { 
@@ -49,11 +47,9 @@
             margin-top: 5px;
         }
 
-        /* 布局 */
         .main-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 30px; }
         @media (max-width: 768px) { .main-layout { grid-template-columns: 1fr; } }
 
-        /* 卡片 */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -66,14 +62,13 @@
 
         h2 { font-weight: 500; font-size: 1.2rem; border-bottom: 2px solid rgba(76, 175, 80, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 20px; color: var(--accent-green-dark); }
 
-        /* 输入框通用样式：应用宋体 */
+        /* 输入框通用样式 */
         textarea, input {
             font-family: var(--font-serif) !important;
             font-size: 1.05rem !important;
             line-height: 1.6;
         }
 
-        /* 文献列表 */
         .note-item {
             background: rgba(255, 255, 255, 0.9);
             padding: 18px;
@@ -83,14 +78,12 @@
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
         .note-item:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(76, 175, 80, 0.1); border-left: 4px solid var(--accent-green); }
 
-        /* 碎片实验室 */
         .fragment-input-area { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
         .fragment-input-area input, .fragment-input-area textarea { 
-            padding: 12px; border-radius: 10px; border: 1px solid #e0e0e0; outline: none; background: rgba(255,255,255,0.8); transition: 0.3s;
+            padding: 12px; border-radius: 10px; border: 1px solid #e0e0e0; outline: none; background: rgba(255,255,255,0.8);
         }
         .fragment-input-area textarea { resize: vertical; min-height: 100px; }
         
@@ -103,73 +96,39 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             white-space: pre-wrap;
             font-family: var(--font-serif);
+            margin-bottom: 10px;
         }
         .fragment-card b { color: var(--accent-green-dark); display: block; margin-bottom: 6px; font-size: 1.1rem; }
 
-        /* 按钮样式 */
-        .btn-main { background: var(--btn-green); color: white; border: none; padding: 16px 30px; border-radius: 15px; cursor: pointer; font-size: 1.1rem; font-weight: 500; width: 100%; margin-bottom: 25px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3); }
-        .btn-main:hover { transform: translateY(-2px); }
-        
+        .btn-main { background: var(--btn-green); color: white; border: none; padding: 16px 30px; border-radius: 15px; cursor: pointer; font-size: 1.1rem; font-weight: 500; width: 100%; margin-bottom: 25px; transition: all 0.3s; }
         .action-text { color: #888; cursor: pointer; font-size: 0.85rem; margin-left: 10px; }
         .action-text.delete:hover { color: #ff5252; }
 
         /* 编辑器视图 */
         #editorView { display: none; background: rgba(255, 255, 255, 0.98); padding: 40px; border-radius: 20px; box-shadow: var(--shadow); }
-        
-        /* 动态标题样式 */
-        #editHeader { 
-            font-family: var(--font-serif); 
-            font-size: 2.2rem; 
-            text-align: center; 
-            color: var(--accent-green-dark);
-            margin-bottom: 10px;
-            border: none;
-            word-wrap: break-word;
-        }
+        #editHeader { font-family: var(--font-serif); font-size: 2.2rem; text-align: center; color: var(--accent-green-dark); margin-bottom: 10px; }
 
-        .editor-meta { text-align: center; color: #999; margin-bottom: 30px; font-size: 0.9rem; }
-
-        /* 极简作者输入框 */
-        .author-input-wrap {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 40px;
-            font-family: var(--font-serif);
-        }
-        .author-input-wrap span { color: #888; }
-        #author {
-            border: none;
-            border-bottom: 1px solid #ccc;
-            background: transparent;
-            text-align: center;
-            width: 200px;
-            padding: 5px;
-            outline: none;
-            transition: 0.3s;
-            font-size: 1.1rem;
-        }
-        #author:focus { border-bottom: 1px solid var(--accent-green); }
+        /* 极简作者栏 */
+        .author-input-wrap { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 40px; font-family: var(--font-serif); }
+        #author { border: none; border-bottom: 1px solid #ccc; background: transparent; text-align: center; width: 200px; padding: 5px; outline: none; font-size: 1.1rem; }
 
         .form-group { margin-bottom: 25px; }
         .form-group label { display: block; margin-bottom: 10px; font-weight: 600; color: var(--accent-green-dark); font-size: 1rem; }
-        
-        /* 编辑器内部文本框 */
-        .form-group textarea, .form-group input.title-input { 
-            width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 12px; box-sizing: border-box; background: #fafafa; transition: 0.3s;
-        }
-        .form-group textarea { resize: vertical; min-height: 120px; }
-        .form-group textarea:focus { outline: none; border-color: var(--accent-green); background: #fff; }
+        .form-group textarea, .form-group input.title-input { width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 12px; box-sizing: border-box; background: #fafafa; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
 
-        .editor-btns { display: flex; gap: 15px; justify-content: center; margin-top: 40px; }
-        
-        /* 导出与保存按钮渐变增强 */
-        .btn-save { background: var(--btn-green); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; }
-        .btn-export { background: var(--btn-teal); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; }
-        .btn-back { background: var(--btn-gray); border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; }
+        /* 倒逼输出专用样式：三个并列框 */
+        .output-section { background: #f9fff9; border: 2px dashed #81c784; padding: 20px; border-radius: 15px; margin-top: 30px; }
+        .output-group { margin-bottom: 15px; }
+        .output-group label { color: #2E7D32; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; display: block; }
+        .output-group textarea { height: 80px !important; min-height: 60px !important; background: white !important; }
 
-        @media print { .header, .main-layout, .editor-btns, .editor-meta { display: none !important; } #editorView { display: block !important; } }
+        .editor-btns { display: flex; gap: 15px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
+        .btn-save { background: var(--btn-green); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; min-width: 120px; }
+        .btn-export { background: var(--btn-teal); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; min-width: 120px; }
+        .btn-back { background: var(--btn-gray); border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; min-width: 120px; }
+
+        @media print { .header, .main-layout, .editor-btns { display: none !important; } #editorView { display: block !important; } }
     </style>
 </head>
 <body>
@@ -195,7 +154,7 @@
                     <textarea id="fragContent" placeholder="在此输入解释... (支持换行和拉伸)"></textarea>
                     <button class="btn-save" id="saveFragBtn" onclick="saveFragment()">顺手记下</button>
                 </div>
-                <div class="fragments-grid" id="fragmentList"></div>
+                <div id="fragmentList"></div>
             </div>
         </div>
     </div>
@@ -211,24 +170,36 @@
         </div>
         
         <div class="form-group">
-            <label>文献标题 (编辑此处可实时更新上方大标题)</label>
+            <label>文献标题</label>
             <input type="text" id="title" class="title-input" placeholder="输入文献标题..." oninput="updateLiveTitle(this.value)">
         </div>
 
-        <div class="form-group"><label>【研究问题】</label><textarea id="q1" placeholder="一句话说清这篇论文在研究什么..."></textarea></div>
-        <div class="form-group"><label>【看似显然 vs 实际发现】</label><textarea id="q2" placeholder="直觉上我们认为：...&#10;本文实际发现：..."></textarea></div>
-        <div class="form-group"><label>【关键机制】</label><textarea id="q3" placeholder="它是通过什么路径起作用的？"></textarea></div>
-        <div class="form-group"><label>【方法亮点】</label><textarea id="q4" placeholder="数据或实验设计有什么巧妙之处？"></textarea></div>
-        <div class="form-group"><label>【我的疑问/延伸思考】</label><textarea id="q5" placeholder="下一步可以研究什么？"></textarea></div>
+        <div class="form-group"><label>【研究问题】</label><textarea id="q1"></textarea></div>
+        <div class="form-group"><label>【看似显然 vs 实际发现】</label><textarea id="q2"></textarea></div>
+        <div class="form-group"><label>【关键机制】</label><textarea id="q3"></textarea></div>
+        <div class="form-group"><label>【方法亮点】</label><textarea id="q4"></textarea></div>
+        <div class="form-group"><label>【我的疑问/延伸思考】</label><textarea id="q5"></textarea></div>
         
-        <div class="form-group">
-            <label>倒逼输出 (小红书/感悟)</label>
-            <textarea id="output" style="height:180px; border: 2px dashed #81c784; background: #f9fff9;" placeholder="第一句：打破直觉的发现是什么？&#10;第二句：研究者怎么证明的？（一句话说清方法亮点）&#10;第三句：和我有什么关系？"></textarea>
+        <div class="output-section">
+            <h3 style="margin-top:0; font-size:1.1rem; color:#2E7D32;">二、倒逼输出 (三问灵魂拷问)</h3>
+            <div class="output-group">
+                <label>第一句：打破直觉的发现是什么？</label>
+                <textarea id="out1"></textarea>
+            </div>
+            <div class="output-group">
+                <label>第二句：研究者怎么证明的？（一句话说清方法亮点）</label>
+                <textarea id="out2"></textarea>
+            </div>
+            <div class="output-group">
+                <label>第三句：和我有什么关系？</label>
+                <textarea id="out3"></textarea>
+            </div>
         </div>
         
         <div class="editor-btns">
             <button class="btn-save" onclick="saveNote()">保存并归档</button>
-            <button class="btn-export" onclick="window.print()">导出 PDF</button>
+            <button class="btn-export" onclick="exportWord()">导出为 Word</button>
+            <button class="btn-export" onclick="window.print()">导出为 PDF</button>
             <button class="btn-back" onclick="closeEditor()">返回主页</button>
         </div>
     </div>
@@ -238,7 +209,6 @@
     let editingNoteId = null; 
     let editingFragId = null;
 
-    // 实时更新大标题
     function updateLiveTitle(val) {
         document.getElementById('editHeader').innerText = val || "新文献研读";
     }
@@ -260,21 +230,22 @@
                 document.getElementById('q3').value = note.content.q3;
                 document.getElementById('q4').value = note.content.q4;
                 document.getElementById('q5').value = note.content.q5;
-                document.getElementById('output').value = note.content.output;
+                // 加载三段式输出
+                document.getElementById('out1').value = note.content.out1 || '';
+                document.getElementById('out2').value = note.content.out2 || '';
+                document.getElementById('out3').value = note.content.out3 || '';
             }
         } else {
             updateLiveTitle("新文献研读");
             document.getElementById('title').value = '';
             document.getElementById('author').value = '';
             document.getElementById('readDate').value = today;
-            document.getElementById('q1').value = '';
-            document.getElementById('q2').value = '';
-            document.getElementById('q3').value = '';
-            document.getElementById('q4').value = '';
+            document.getElementById('q1').value = ''; document.getElementById('q2').value = '';
+            document.getElementById('q3').value = ''; document.getElementById('q4').value = '';
             document.getElementById('q5').value = '';
-            document.getElementById('output').value = '';
+            document.getElementById('out1').value = ''; document.getElementById('out2').value = '';
+            document.getElementById('out3').value = '';
         }
-
         document.getElementById('homeView').style.display = 'none';
         document.getElementById('editorView').style.display = 'block';
         window.scrollTo(0, 0);
@@ -294,59 +265,78 @@
             content: { 
                 q1: document.getElementById('q1').value, q2: document.getElementById('q2').value,
                 q3: document.getElementById('q3').value, q4: document.getElementById('q4').value,
-                q5: document.getElementById('q5').value, output: document.getElementById('output').value
+                q5: document.getElementById('q5').value,
+                out1: document.getElementById('out1').value,
+                out2: document.getElementById('out2').value,
+                out3: document.getElementById('out3').value
             }
         };
-
         if (editingNoteId) {
             const index = notes.findIndex(n => n.id === editingNoteId);
-            if(index !== -1) {
-                notes[index].title = noteData.title;
-                notes[index].author = noteData.author;
-                notes[index].readDate = noteData.readDate;
-                notes[index].content = noteData.content;
-            }
+            if(index !== -1) notes[index] = {...notes[index], ...noteData};
         } else {
             noteData.id = Date.now();
             noteData.date = new Date().toLocaleDateString();
             notes.unshift(noteData);
         }
-
         localStorage.setItem('myAcademicNotes', JSON.stringify(notes));
-        renderAll();
-        closeEditor();
+        renderAll(); closeEditor();
     }
 
-    function deleteNote(id) {
-        if(!confirm("⚠️ 确定要永久删除这篇文献记录吗？")) return;
-        let notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
-        notes = notes.filter(n => n.id !== id);
-        localStorage.setItem('myAcademicNotes', JSON.stringify(notes));
-        renderAll();
+    // Word 导出逻辑
+    function exportWord() {
+        const title = document.getElementById('title').value || '文献研读';
+        const author = document.getElementById('author').value || '未知作者';
+        const date = document.getElementById('readDate').value;
+        
+        const html = `
+            <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+            <head><meta charset='utf-8'><style>
+                body { font-family: 'Songti SC', 'SimSun', serif; line-height: 1.5; }
+                h1 { color: #388E3C; text-align: center; font-size: 24pt; }
+                .meta { text-align: center; color: #666; margin-bottom: 30px; }
+                .label { color: #388E3C; font-weight: bold; margin-top: 20px; border-bottom: 1px solid #eee; }
+                .content { margin-bottom: 15px; white-space: pre-wrap; }
+                .output-box { background: #f9f9f9; padding: 10px; border: 1px dashed #4CAF50; }
+            </style></head>
+            <body>
+                <h1>${title}</h1>
+                <div class='meta'>作者: ${author} | 日期: ${date}</div>
+                <div class='label'>【研究问题】</div><div class='content'>${document.getElementById('q1').value}</div>
+                <div class='label'>【看似显然 vs 实际发现】</div><div class='content'>${document.getElementById('q2').value}</div>
+                <div class='label'>【关键机制】</div><div class='content'>${document.getElementById('q3').value}</div>
+                <div class='label'>【方法亮点】</div><div class='content'>${document.getElementById('q4').value}</div>
+                <div class='label'>【我的疑问/延伸思考】</div><div class='content'>${document.getElementById('q5').value}</div>
+                <br>
+                <div class='output-box'>
+                    <div style='font-weight:bold; color:#2E7D32;'>二、倒逼输出</div>
+                    <p><b>第一句：</b>${document.getElementById('out1').value}</p>
+                    <p><b>第二句：</b>${document.getElementById('out2').value}</p>
+                    <p><b>第三句：</b>${document.getElementById('out3').value}</p>
+                </div>
+            </body></html>
+        `;
+        const blob = new Blob([html], { type: 'application/msword' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${title}.doc`;
+        link.click();
     }
 
     function saveFragment() {
         const titleVal = document.getElementById('fragTitle').value;
         const contentVal = document.getElementById('fragContent').value;
         if(!titleVal) return alert("请输入概念名称！");
-        
         let frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
-
         if (editingFragId) {
             const index = frags.findIndex(f => f.id === editingFragId);
-            if(index !== -1) {
-                frags[index].title = titleVal;
-                frags[index].content = contentVal;
-            }
-            editingFragId = null;
-            document.getElementById('saveFragBtn').innerText = "顺手记下";
+            if(index !== -1) { frags[index].title = titleVal; frags[index].content = contentVal; }
+            editingFragId = null; document.getElementById('saveFragBtn').innerText = "顺手记下";
         } else {
             frags.unshift({ id: Date.now(), title: titleVal, content: contentVal });
         }
-        
         localStorage.setItem('myAcademicFrags', JSON.stringify(frags));
-        document.getElementById('fragTitle').value = '';
-        document.getElementById('fragContent').value = '';
+        document.getElementById('fragTitle').value = ''; document.getElementById('fragContent').value = '';
         renderAll();
     }
 
@@ -356,50 +346,29 @@
         if (frag) {
             document.getElementById('fragTitle').value = frag.title;
             document.getElementById('fragContent').value = frag.content;
-            editingFragId = id; 
-            document.getElementById('saveFragBtn').innerText = "更新保存";
-            window.scrollTo(0, 500);
+            editingFragId = id; document.getElementById('saveFragBtn').innerText = "更新保存";
         }
     }
 
-    function deleteFrag(id) {
-        if(!confirm("⚠️ 确定要删除这个概念碎片吗？")) return;
-        let frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
-        frags = frags.filter(f => f.id !== id);
-        localStorage.setItem('myAcademicFrags', JSON.stringify(frags));
-        renderAll();
-    }
+    function deleteNote(id) { if(confirm("确定删除这篇文献记录吗？")) { let notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]'); notes = notes.filter(n => n.id !== id); localStorage.setItem('myAcademicNotes', JSON.stringify(notes)); renderAll(); } }
+    function deleteFrag(id) { if(confirm("确定删除这个概念碎片吗？")) { let frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]'); frags = frags.filter(f => f.id !== id); localStorage.setItem('myAcademicFrags', JSON.stringify(frags)); renderAll(); } }
 
     function renderAll() {
-        const noteList = document.getElementById('noteList');
         const notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
-        noteList.innerHTML = notes.map(n => `
+        document.getElementById('noteList').innerHTML = notes.map(n => `
             <div class="note-item">
-                <div>
-                    <b style="font-size: 1.15rem; color: #2E7D32; font-family: var(--font-serif);">${n.title}</b><br>
-                    <small style="color:#888;">${n.author || '未知'} · ${n.readDate || n.date}</small>
-                </div>
-                <div>
-                    <span class="action-text" onclick="openEditor(${n.id})">编辑</span>
-                    <span class="action-text delete" onclick="deleteNote(${n.id})">删除</span>
-                </div>
+                <div><b style="font-size: 1.15rem; color: #2E7D32; font-family: var(--font-serif);">${n.title}</b><br><small style="color:#888;">${n.author || '未知'} · ${n.readDate || n.date}</small></div>
+                <div><span class="action-text" onclick="openEditor(${n.id})">编辑</span><span class="action-text delete" onclick="deleteNote(${n.id})">删除</span></div>
             </div>
         `).join('');
-
-        const fragList = document.getElementById('fragmentList');
         const frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
-        fragList.innerHTML = frags.map(f => `
+        document.getElementById('fragmentList').innerHTML = frags.map(f => `
             <div class="fragment-card">
-                <div style="position:absolute; top:12px; right:12px;">
-                    <span class="action-text" onclick="editFrag(${f.id})">✎</span>
-                    <span class="action-text delete" onclick="deleteFrag(${f.id})">×</span>
-                </div>
-                <b>${f.title}</b>
-                <div style="color: #444;">${f.content}</div>
+                <div style="position:absolute; top:12px; right:12px;"><span class="action-text" onclick="editFrag(${f.id})">✎</span><span class="action-text delete" onclick="deleteFrag(${f.id})">×</span></div>
+                <b>${f.title}</b><div>${f.content}</div>
             </div>
         `).join('');
     }
-
     window.onload = renderAll;
 </script>
 </body>
