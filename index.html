@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小景的研读文件夹</title>
+    <style>
+        :root {
+            --primary-green: #e9f5e9; /* 极浅嫩绿背景 */
+            --accent-green: #4CAF50;  /* 核心嫩绿色 */
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --text-main: #333;
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9f5e9 100%);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* 容器布局 */
+        #app {
+            width: 90%;
+            max-width: 800px;
+            padding: 40px 20px;
+        }
+
+        /* 欢迎语样式 */
+        .greeting {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .greeting h1 {
+            font-weight: 300;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--accent-green);
+        }
+
+        .greeting p {
+            font-size: 1.1rem;
+            color: #666;
+            letter-spacing: 2px;
+        }
+
+        /* 毛玻璃卡片风按钮 */
+        .glass-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: var(--shadow);
+            border-radius: 15px;
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            color: var(--accent-green);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            border: none;
+            outline: none;
+        }
+
+        .glass-btn:hover {
+            transform: translateY(-3px);
+            background: var(--accent-green);
+            color: white;
+        }
+
+        /* 仪表盘列表 */
+        .dashboard {
+            margin-top: 40px;
+            display: grid;
+            gap: 15px;
+        }
+
+        .note-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(4px);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid var(--accent-green);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* 编辑器样式 */
+        .editor-view {
+            display: none; /* 默认隐藏，点击后显示 */
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--accent-green);
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            background: #fafafa;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .save-btn { background: var(--accent-green); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        .export-btn { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        .back-btn { background: #ccc; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+
+        /* 打印优化 (PDF导出用) */
+        @media print {
+            .button-group, .greeting, .glass-btn { display: none !important; }
+            body { background: white; }
+            .editor-view { display: block !important; box-shadow: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div id="homeView">
+        <div class="greeting">
+            <h1>Hi，小景！</h1>
+            <p>行在今日，实事求是。</p>
+        </div>
+        
+        <button class="glass-btn" onclick="showEditor()">+ 点击研读新文献</button>
+
+        <div class="dashboard" id="noteList">
+            </div>
+    </div>
+
+    <div id="editorView" class="editor-view">
+        <h2 style="font-weight: 300; text-align: center;">学术研读笔记</h2>
+        <hr style="border: 0.5px solid #eee; margin-bottom: 30px;">
+        
+        <div class="form-group">
+            <label>文献标题</label>
+            <input type="text" id="title" placeholder="输入文章标题...">
+        </div>
+        <div class="form-group">
+            <label>分类/标签</label>
+            <input type="text" id="tag" placeholder="如：经济学、社会学...">
+        </div>
+
+        <h3 style="color: #888; font-size: 0.9rem; text-transform: uppercase;">一、结构化解读</h3>
+        <div class="form-group">
+            <label>【研究问题】</label>
+            <textarea id="q1" placeholder="一句话说清..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>【看似显然 vs 实际发现】</label>
+            <textarea id="q2" placeholder="直觉认为：____&#10;本文发现：____"></textarea>
+        </div>
+        <div class="form-group">
+            <label>【关键机制】</label>
+            <textarea id="q3"></textarea>
+        </div>
+        <div class="form-group">
+            <label>【方法亮点】</label>
+            <textarea id="q4"></textarea>
+        </div>
+        <div class="form-group">
+            <label>【我的疑问或延伸思考】</label>
+            <textarea id="q5"></textarea>
+        </div>
+
+        <h3 style="color: #888; font-size: 0.9rem; text-transform: uppercase;">二、倒逼输出 (小红书/复盘)</h3>
+        <div class="form-group">
+            <label>我的总结感悟</label>
+            <textarea id="output" style="height: 150px; border: 1px dashed var(--accent-green);" placeholder="1. 打破直觉的发现是什么？&#10;2. 研究者怎么证明的？&#10;3. 和我有什么关系？"></textarea>
+        </div>
+
+        <div class="button-group">
+            <button class="save-btn" onclick="saveNote()">保存到浏览器</button>
+            <button class="export-btn" onclick="exportPDF()">导出为 PDF</button>
+            <button class="export-btn" onclick="exportWord()">导出 Word</button>
+            <button class="back-btn" onclick="showHome()">返回主页</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 逻辑：切换视图
+    function showEditor() {
+        document.getElementById('homeView').style.display = 'none';
+        document.getElementById('editorView').style.display = 'block';
+    }
+
+    function showHome() {
+        document.getElementById('homeView').style.display = 'block';
+        document.getElementById('editorView').style.display = 'none';
+        renderDashboard();
+    }
+
+    // 逻辑：保存数据
+    function saveNote() {
+        const note = {
+            id: Date.now(),
+            title: document.getElementById('title').value || '未命名文献',
+            tag: document.getElementById('tag').value || '默认',
+            content: {
+                q1: document.getElementById('q1').value,
+                q2: document.getElementById('q2').value,
+                q3: document.getElementById('q3').value,
+                q4: document.getElementById('q4').value,
+                q5: document.getElementById('q5').value,
+                output: document.getElementById('output').value
+            },
+            time: new Date().toLocaleDateString()
+        };
+
+        let notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
+        notes.push(note);
+        localStorage.setItem('myAcademicNotes', JSON.stringify(notes));
+        alert('保存成功！');
+        showHome();
+    }
+
+    // 逻辑：渲染仪表盘
+    function renderDashboard() {
+        const list = document.getElementById('noteList');
+        const notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
+        list.innerHTML = '';
+        
+        notes.forEach(note => {
+            const card = document.createElement('div');
+            card.className = 'note-card';
+            card.innerHTML = `
+                <div>
+                    <strong>${note.title}</strong><br>
+                    <small style="color: #888;">${note.time} | 标签: ${note.tag}</small>
+                </div>
+                <button onclick="deleteNote(${note.id})" style="color: #ff4d4d; border:none; background:none; cursor:pointer;">删除</button>
+            `;
+            list.appendChild(card);
+        });
+    }
+
+    // 逻辑：导出 PDF
+    function exportPDF() {
+        window.print(); // 调用系统打印，可直接保存为PDF，样式最完美
+    }
+
+    // 逻辑：导出 Word (基础实现)
+    function exportWord() {
+        const title = document.getElementById('title').value || '研读笔记';
+        const content = document.getElementById('editorView').innerText;
+        const blob = new Blob(['\ufeff' + content], { type: 'application/msword' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${title}.doc`;
+        link.click();
+    }
+
+    function deleteNote(id) {
+        let notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
+        notes = notes.filter(n => n.id !== id);
+        localStorage.setItem('myAcademicNotes', JSON.stringify(notes));
+        renderDashboard();
+    }
+
+    // 初始化加载
+    window.onload = renderDashboard;
+</script>
+
+</body>
+</html>
