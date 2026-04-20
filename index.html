@@ -107,22 +107,74 @@
         #editHeader { font-family: var(--font-serif); font-size: 2.2rem; text-align: center; color: var(--accent-green-dark); margin-bottom: 10px; }
 
         .author-input-wrap { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 40px; font-family: var(--font-serif); }
-        #author { border: none; border-bottom: 1px solid #ccc; background: transparent; text-align: center; width: 200px; padding: 5px; outline: none; font-size: 1.1rem; }
+        #author { border: none; border-bottom: 1px solid #ccc; background: transparent; text-align: center; width: 200px; padding: 5px; outline: none; font-size: 1.1rem; transition: 0.3s; }
+        #author:focus { border-bottom-color: var(--accent-green); }
 
         .form-group { margin-bottom: 25px; }
         .form-group label { display: block; margin-bottom: 10px; font-weight: 600; color: var(--accent-green-dark); font-size: 1rem; }
-        .form-group textarea, .form-group input.title-input { width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 12px; box-sizing: border-box; background: #fafafa; }
+        .form-group textarea, .form-group input.title-input { 
+            width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 12px; box-sizing: border-box; background: #fafafa; transition: 0.3s;
+        }
         .form-group textarea { resize: vertical; min-height: 100px; }
+        .form-group textarea:focus, .form-group input.title-input:focus { outline: none; border-color: var(--accent-green); background: #fff; box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1); }
 
-        .output-section { background: #f9fff9; border: 2px dashed #81c784; padding: 20px; border-radius: 15px; margin-top: 30px; }
-        .output-group { margin-bottom: 15px; }
-        .output-group label { color: #2E7D32; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; display: block; }
-        .output-group textarea { height: 80px !important; min-height: 60px !important; background: white !important; }
+        /* ========================================== */
+        /* ✨ 升级版倒逼输出 UI ✨ */
+        /* ========================================== */
+        .output-section { 
+            background: linear-gradient(145deg, #f2fbf4, #e8f5e9); 
+            border: 1px solid rgba(76, 175, 80, 0.15); 
+            padding: 30px; 
+            border-radius: 18px; 
+            margin-top: 40px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+        }
+        .output-section h3 { margin-top: 0; font-size: 1.15rem; color: #2E7D32; border-bottom: 1px solid rgba(76, 175, 80, 0.2); padding-bottom: 10px; margin-bottom: 25px; }
+        
+        .output-group { margin-bottom: 20px; }
+        .output-group label { 
+            color: var(--accent-green-dark); 
+            font-size: 0.95rem; 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        /* 优雅的绿色小竖条点缀 */
+        .output-group label::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 14px;
+            background: var(--accent-green);
+            border-radius: 2px;
+        }
+        
+        /* 玻璃质感悬浮输入框 */
+        .output-group textarea { 
+            height: 90px !important; 
+            min-height: 70px !important; 
+            background: rgba(255, 255, 255, 0.6) !important; /* 半透明背景 */
+            border: 1px solid rgba(76, 175, 80, 0.15) !important;
+            border-radius: 14px !important; /* 更圆润的边角 */
+            padding: 15px !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02) !important;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important; /* 丝滑过渡 */
+        }
+        /* 点击时的浮起效果 */
+        .output-group textarea:focus {
+            background: #fff !important;
+            border-color: var(--accent-green) !important;
+            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.15) !important;
+            transform: translateY(-2px); /* 微微上浮 */
+        }
 
         .editor-btns { display: flex; gap: 15px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
-        .btn-save { background: var(--btn-green); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; min-width: 120px; }
-        .btn-export { background: var(--btn-teal); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; min-width: 120px; }
-        .btn-back { background: var(--btn-gray); border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; min-width: 120px; }
+        .btn-save { background: var(--btn-green); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; min-width: 120px; transition: 0.3s; }
+        .btn-export { background: var(--btn-teal); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; min-width: 120px; transition: 0.3s; }
+        .btn-back { background: var(--btn-gray); border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; min-width: 120px; transition: 0.3s; }
+        .btn-save:hover, .btn-export:hover, .btn-back:hover { transform: translateY(-2px); opacity: 0.95; }
 
         @media print { .header, .main-layout, .editor-btns { display: none !important; } #editorView { display: block !important; } }
     </style>
@@ -177,7 +229,7 @@
         <div class="form-group"><label>【我的疑问/延伸思考】</label><textarea id="q5"></textarea></div>
         
         <div class="output-section">
-            <h3 style="margin-top:0; font-size:1.1rem; color:#2E7D32;">二、倒逼输出 (三问灵魂拷问)</h3>
+            <h3>二、倒逼输出 (三问灵魂拷问)</h3>
             <div class="output-group">
                 <label>第一句：打破直觉的发现是什么？</label>
                 <textarea id="out1"></textarea>
@@ -265,19 +317,12 @@
         renderAll(); closeEditor();
     }
 
-    // ==========================================
-    // 修复后的 Word 导出逻辑
-    // ==========================================
     function exportWord() {
         const title = document.getElementById('title').value || '文献研读';
         const author = document.getElementById('author').value || '未知作者';
         const date = document.getElementById('readDate').value;
         
-        // 【核心修复】：将文本框里的隐藏回车符 \n 替换成 Word 能看懂的 <br>
-        const formatText = (text) => {
-            if (!text) return '';
-            return text.replace(/\n/g, '<br>');
-        };
+        const formatText = (text) => { if (!text) return ''; return text.replace(/\n/g, '<br>'); };
         
         const html = `
             <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -293,20 +338,11 @@
                 <h1>${title}</h1>
                 <div class='meta'>作者: ${author} &nbsp;&nbsp;|&nbsp;&nbsp; 阅读日期: ${date}</div>
 
-                <div class='label'>【研究问题】</div>
-                <div class='content'>${formatText(document.getElementById('q1').value)}</div>
-
-                <div class='label'>【看似显然 vs 实际发现】</div>
-                <div class='content'>${formatText(document.getElementById('q2').value)}</div>
-
-                <div class='label'>【关键机制】</div>
-                <div class='content'>${formatText(document.getElementById('q3').value)}</div>
-
-                <div class='label'>【方法亮点】</div>
-                <div class='content'>${formatText(document.getElementById('q4').value)}</div>
-
-                <div class='label'>【我的疑问/延伸思考】</div>
-                <div class='content'>${formatText(document.getElementById('q5').value)}</div>
+                <div class='label'>【研究问题】</div><div class='content'>${formatText(document.getElementById('q1').value)}</div>
+                <div class='label'>【看似显然 vs 实际发现】</div><div class='content'>${formatText(document.getElementById('q2').value)}</div>
+                <div class='label'>【关键机制】</div><div class='content'>${formatText(document.getElementById('q3').value)}</div>
+                <div class='label'>【方法亮点】</div><div class='content'>${formatText(document.getElementById('q4').value)}</div>
+                <div class='label'>【我的疑问/延伸思考】</div><div class='content'>${formatText(document.getElementById('q5').value)}</div>
                 
                 <br>
                 <div class='output-box'>
@@ -318,12 +354,8 @@
             </body></html>
         `;
         const blob = new Blob([html], { type: 'application/msword' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${title}.doc`;
-        link.click();
+        const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `${title}.doc`; link.click();
     }
-    // ==========================================
 
     function saveFragment() {
         const titleVal = document.getElementById('fragTitle').value; const contentVal = document.getElementById('fragContent').value;
@@ -345,11 +377,12 @@
         if (frag) {
             document.getElementById('fragTitle').value = frag.title; document.getElementById('fragContent').value = frag.content;
             editingFragId = id; document.getElementById('saveFragBtn').innerText = "更新保存";
+            window.scrollTo(0, 500);
         }
     }
 
-    function deleteNote(id) { if(confirm("确定删除这篇文献记录吗？")) { let notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]'); notes = notes.filter(n => n.id !== id); localStorage.setItem('myAcademicNotes', JSON.stringify(notes)); renderAll(); } }
-    function deleteFrag(id) { if(confirm("确定删除这个概念碎片吗？")) { let frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]'); frags = frags.filter(f => f.id !== id); localStorage.setItem('myAcademicFrags', JSON.stringify(frags)); renderAll(); } }
+    function deleteNote(id) { if(confirm("⚠️ 确定要永久删除这篇文献记录吗？")) { let notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]'); notes = notes.filter(n => n.id !== id); localStorage.setItem('myAcademicNotes', JSON.stringify(notes)); renderAll(); } }
+    function deleteFrag(id) { if(confirm("⚠️ 确定要删除这个概念碎片吗？")) { let frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]'); frags = frags.filter(f => f.id !== id); localStorage.setItem('myAcademicFrags', JSON.stringify(frags)); renderAll(); } }
 
     function renderAll() {
         const notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
@@ -363,7 +396,7 @@
         document.getElementById('fragmentList').innerHTML = frags.map(f => `
             <div class="fragment-card">
                 <div style="position:absolute; top:12px; right:12px;"><span class="action-text" onclick="editFrag(${f.id})">✎</span><span class="action-text delete" onclick="deleteFrag(${f.id})">×</span></div>
-                <b>${f.title}</b><div>${f.content}</div>
+                <b>${f.title}</b><div style="color: #444;">${f.content}</div>
             </div>
         `).join('');
     }
