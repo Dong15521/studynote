@@ -62,7 +62,6 @@
 
         h2 { font-weight: 500; font-size: 1.2rem; border-bottom: 2px solid rgba(76, 175, 80, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 20px; color: var(--accent-green-dark); }
 
-        /* 输入框通用样式 */
         textarea, input {
             font-family: var(--font-serif) !important;
             font-size: 1.05rem !important;
@@ -104,11 +103,9 @@
         .action-text { color: #888; cursor: pointer; font-size: 0.85rem; margin-left: 10px; }
         .action-text.delete:hover { color: #ff5252; }
 
-        /* 编辑器视图 */
         #editorView { display: none; background: rgba(255, 255, 255, 0.98); padding: 40px; border-radius: 20px; box-shadow: var(--shadow); }
         #editHeader { font-family: var(--font-serif); font-size: 2.2rem; text-align: center; color: var(--accent-green-dark); margin-bottom: 10px; }
 
-        /* 极简作者栏 */
         .author-input-wrap { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 40px; font-family: var(--font-serif); }
         #author { border: none; border-bottom: 1px solid #ccc; background: transparent; text-align: center; width: 200px; padding: 5px; outline: none; font-size: 1.1rem; }
 
@@ -117,7 +114,6 @@
         .form-group textarea, .form-group input.title-input { width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 12px; box-sizing: border-box; background: #fafafa; }
         .form-group textarea { resize: vertical; min-height: 100px; }
 
-        /* 倒逼输出专用样式：三个并列框 */
         .output-section { background: #f9fff9; border: 2px dashed #81c784; padding: 20px; border-radius: 15px; margin-top: 30px; }
         .output-group { margin-bottom: 15px; }
         .output-group label { color: #2E7D32; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; display: block; }
@@ -209,9 +205,7 @@
     let editingNoteId = null; 
     let editingFragId = null;
 
-    function updateLiveTitle(val) {
-        document.getElementById('editHeader').innerText = val || "新文献研读";
-    }
+    function updateLiveTitle(val) { document.getElementById('editHeader').innerText = val || "新文献研读"; }
 
     function openEditor(noteId = null) {
         editingNoteId = noteId; 
@@ -221,24 +215,19 @@
             const notes = JSON.parse(localStorage.getItem('myAcademicNotes') || '[]');
             const note = notes.find(n => n.id === noteId);
             if (note) {
-                document.getElementById('title').value = note.title;
-                updateLiveTitle(note.title);
+                document.getElementById('title').value = note.title; updateLiveTitle(note.title);
                 document.getElementById('author').value = note.author || '';
                 document.getElementById('readDate').value = note.readDate || today;
-                document.getElementById('q1').value = note.content.q1;
-                document.getElementById('q2').value = note.content.q2;
-                document.getElementById('q3').value = note.content.q3;
-                document.getElementById('q4').value = note.content.q4;
+                document.getElementById('q1').value = note.content.q1; document.getElementById('q2').value = note.content.q2;
+                document.getElementById('q3').value = note.content.q3; document.getElementById('q4').value = note.content.q4;
                 document.getElementById('q5').value = note.content.q5;
-                // 加载三段式输出
                 document.getElementById('out1').value = note.content.out1 || '';
                 document.getElementById('out2').value = note.content.out2 || '';
                 document.getElementById('out3').value = note.content.out3 || '';
             }
         } else {
             updateLiveTitle("新文献研读");
-            document.getElementById('title').value = '';
-            document.getElementById('author').value = '';
+            document.getElementById('title').value = ''; document.getElementById('author').value = '';
             document.getElementById('readDate').value = today;
             document.getElementById('q1').value = ''; document.getElementById('q2').value = '';
             document.getElementById('q3').value = ''; document.getElementById('q4').value = '';
@@ -252,8 +241,7 @@
     }
 
     function closeEditor() {
-        document.getElementById('homeView').style.display = 'block';
-        document.getElementById('editorView').style.display = 'none';
+        document.getElementById('homeView').style.display = 'block'; document.getElementById('editorView').style.display = 'none';
     }
 
     function saveNote() {
@@ -265,54 +253,67 @@
             content: { 
                 q1: document.getElementById('q1').value, q2: document.getElementById('q2').value,
                 q3: document.getElementById('q3').value, q4: document.getElementById('q4').value,
-                q5: document.getElementById('q5').value,
-                out1: document.getElementById('out1').value,
-                out2: document.getElementById('out2').value,
-                out3: document.getElementById('out3').value
+                q5: document.getElementById('q5').value, out1: document.getElementById('out1').value,
+                out2: document.getElementById('out2').value, out3: document.getElementById('out3').value
             }
         };
         if (editingNoteId) {
             const index = notes.findIndex(n => n.id === editingNoteId);
             if(index !== -1) notes[index] = {...notes[index], ...noteData};
-        } else {
-            noteData.id = Date.now();
-            noteData.date = new Date().toLocaleDateString();
-            notes.unshift(noteData);
-        }
+        } else { noteData.id = Date.now(); noteData.date = new Date().toLocaleDateString(); notes.unshift(noteData); }
         localStorage.setItem('myAcademicNotes', JSON.stringify(notes));
         renderAll(); closeEditor();
     }
 
-    // Word 导出逻辑
+    // ==========================================
+    // 修复后的 Word 导出逻辑
+    // ==========================================
     function exportWord() {
         const title = document.getElementById('title').value || '文献研读';
         const author = document.getElementById('author').value || '未知作者';
         const date = document.getElementById('readDate').value;
         
+        // 【核心修复】：将文本框里的隐藏回车符 \n 替换成 Word 能看懂的 <br>
+        const formatText = (text) => {
+            if (!text) return '';
+            return text.replace(/\n/g, '<br>');
+        };
+        
         const html = `
             <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
             <head><meta charset='utf-8'><style>
-                body { font-family: 'Songti SC', 'SimSun', serif; line-height: 1.5; }
-                h1 { color: #388E3C; text-align: center; font-size: 24pt; }
-                .meta { text-align: center; color: #666; margin-bottom: 30px; }
-                .label { color: #388E3C; font-weight: bold; margin-top: 20px; border-bottom: 1px solid #eee; }
-                .content { margin-bottom: 15px; white-space: pre-wrap; }
-                .output-box { background: #f9f9f9; padding: 10px; border: 1px dashed #4CAF50; }
+                body { font-family: 'Songti SC', 'SimSun', serif; line-height: 1.6; }
+                h1 { color: #388E3C; text-align: center; font-size: 22pt; margin-bottom: 5px; }
+                .meta { text-align: center; color: #666; margin-bottom: 30px; font-size: 11pt; }
+                .label { color: #388E3C; font-weight: bold; margin-top: 25px; border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 13pt; }
+                .content { margin-top: 10px; margin-bottom: 20px; font-size: 12pt; }
+                .output-box { background: #f9f9f9; padding: 20px; border: 1px dashed #4CAF50; margin-top: 40px; }
             </style></head>
             <body>
                 <h1>${title}</h1>
-                <div class='meta'>作者: ${author} | 日期: ${date}</div>
-                <div class='label'>【研究问题】</div><div class='content'>${document.getElementById('q1').value}</div>
-                <div class='label'>【看似显然 vs 实际发现】</div><div class='content'>${document.getElementById('q2').value}</div>
-                <div class='label'>【关键机制】</div><div class='content'>${document.getElementById('q3').value}</div>
-                <div class='label'>【方法亮点】</div><div class='content'>${document.getElementById('q4').value}</div>
-                <div class='label'>【我的疑问/延伸思考】</div><div class='content'>${document.getElementById('q5').value}</div>
+                <div class='meta'>作者: ${author} &nbsp;&nbsp;|&nbsp;&nbsp; 阅读日期: ${date}</div>
+
+                <div class='label'>【研究问题】</div>
+                <div class='content'>${formatText(document.getElementById('q1').value)}</div>
+
+                <div class='label'>【看似显然 vs 实际发现】</div>
+                <div class='content'>${formatText(document.getElementById('q2').value)}</div>
+
+                <div class='label'>【关键机制】</div>
+                <div class='content'>${formatText(document.getElementById('q3').value)}</div>
+
+                <div class='label'>【方法亮点】</div>
+                <div class='content'>${formatText(document.getElementById('q4').value)}</div>
+
+                <div class='label'>【我的疑问/延伸思考】</div>
+                <div class='content'>${formatText(document.getElementById('q5').value)}</div>
+                
                 <br>
                 <div class='output-box'>
-                    <div style='font-weight:bold; color:#2E7D32;'>二、倒逼输出</div>
-                    <p><b>第一句：</b>${document.getElementById('out1').value}</p>
-                    <p><b>第二句：</b>${document.getElementById('out2').value}</p>
-                    <p><b>第三句：</b>${document.getElementById('out3').value}</p>
+                    <div style='font-weight:bold; color:#2E7D32; font-size: 14pt; margin-bottom: 15px;'>二、倒逼输出</div>
+                    <p><b>第一句：打破直觉的发现是什么？</b><br>${formatText(document.getElementById('out1').value)}</p>
+                    <p><b>第二句：研究者怎么证明的？</b><br>${formatText(document.getElementById('out2').value)}</p>
+                    <p><b>第三句：和我有什么关系？</b><br>${formatText(document.getElementById('out3').value)}</p>
                 </div>
             </body></html>
         `;
@@ -322,19 +323,17 @@
         link.download = `${title}.doc`;
         link.click();
     }
+    // ==========================================
 
     function saveFragment() {
-        const titleVal = document.getElementById('fragTitle').value;
-        const contentVal = document.getElementById('fragContent').value;
+        const titleVal = document.getElementById('fragTitle').value; const contentVal = document.getElementById('fragContent').value;
         if(!titleVal) return alert("请输入概念名称！");
         let frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
         if (editingFragId) {
             const index = frags.findIndex(f => f.id === editingFragId);
             if(index !== -1) { frags[index].title = titleVal; frags[index].content = contentVal; }
             editingFragId = null; document.getElementById('saveFragBtn').innerText = "顺手记下";
-        } else {
-            frags.unshift({ id: Date.now(), title: titleVal, content: contentVal });
-        }
+        } else { frags.unshift({ id: Date.now(), title: titleVal, content: contentVal }); }
         localStorage.setItem('myAcademicFrags', JSON.stringify(frags));
         document.getElementById('fragTitle').value = ''; document.getElementById('fragContent').value = '';
         renderAll();
@@ -344,8 +343,7 @@
         const frags = JSON.parse(localStorage.getItem('myAcademicFrags') || '[]');
         const frag = frags.find(f => f.id === id);
         if (frag) {
-            document.getElementById('fragTitle').value = frag.title;
-            document.getElementById('fragContent').value = frag.content;
+            document.getElementById('fragTitle').value = frag.title; document.getElementById('fragContent').value = frag.content;
             editingFragId = id; document.getElementById('saveFragBtn').innerText = "更新保存";
         }
     }
