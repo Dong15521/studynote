@@ -36,6 +36,38 @@
 
         .header { text-align: center; margin-bottom: 40px; }
         .header h1 { font-weight: 300; font-size: 2.2rem; color: var(--accent-green-dark); margin: 10px 0; }
+
+        /* ===== ✨ 可编辑用户名 ✨ ===== */
+        .name-editable {
+            outline: none;
+            cursor: text;
+            padding: 0 4px;
+            border-radius: 6px;
+            border-bottom: 1px dashed rgba(76, 175, 80, 0.35);
+            transition: all 0.3s ease;
+        }
+        .name-editable:hover {
+            border-bottom-color: var(--accent-green);
+            background: rgba(76, 175, 80, 0.05);
+        }
+        .name-editable:focus {
+            border-bottom: 1px solid var(--accent-green);
+            background: rgba(76, 175, 80, 0.08);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        /* 悬停/聚焦时显示小铅笔提示 */
+        .name-editable::after {
+            content: '✎';
+            font-size: 0.75rem;
+            color: rgba(56, 142, 60, 0.45);
+            margin-left: 8px;
+            vertical-align: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .name-editable:hover::after,
+        .name-editable:focus::after { opacity: 1; }
+
         .header p.motto { 
             font-family: var(--font-serif);
             font-size: 1.8rem; 
@@ -184,7 +216,8 @@
 <div id="app">
     <div id="homeView">
         <div class="header">
-            <h1>Hi，小景！</h1>
+            <!-- ✨ 名字改为可编辑：点击即可修改，失焦自动保存 ✨ -->
+            <h1>Hi，<span id="userName" class="name-editable" contenteditable="true" spellcheck="false" title="点击可修改名字">小景</span>！</h1>
             <p class="motto">行在今日，实事求是。</p>
         </div>
 
@@ -256,6 +289,50 @@
 <script>
     let editingNoteId = null; 
     let editingFragId = null;
+
+    /* ========================================== */
+    /* ✨ 用户名可编辑逻辑 ✨ */
+    /* ========================================== */
+    const DEFAULT_NAME = '小景';
+    const NAME_KEY = 'myAcademicName';
+
+    function applyName(name) {
+        const safeName = (name || '').trim() || DEFAULT_NAME;
+        document.getElementById('userName').innerText = safeName;
+        document.title = `${safeName}的学术空间`;
+    }
+
+    function initName() {
+        const el = document.getElementById('userName');
+
+        // 初始化：读取上次保存的名字
+        applyName(localStorage.getItem(NAME_KEY) || DEFAULT_NAME);
+
+        // 回车 = 确认（不换行）
+        el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
+            if (e.key === 'Escape') { 
+                el.innerText = localStorage.getItem(NAME_KEY) || DEFAULT_NAME; 
+                el.blur(); 
+            }
+        });
+
+        // 粘贴时只保留纯文本（防止粘贴进 HTML 破坏结构）
+        el.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const text = ((e.clipboardData || window.clipboardData).getData('text') || '')
+                .replace(/[\r\n\t]/g, ' ').trim();
+            document.execCommand('insertText', false, text);
+        });
+
+        // 失焦时保存 + 更新标题
+        el.addEventListener('blur', () => {
+            const val = el.innerText.replace(/[\r\n\t]/g, ' ').trim();
+            const finalName = val || DEFAULT_NAME;   // 清空则恢复默认
+            localStorage.setItem(NAME_KEY, finalName);
+            applyName(finalName);
+        });
+    }
 
     function updateLiveTitle(val) { document.getElementById('editHeader').innerText = val || "新文献研读"; }
 
@@ -400,7 +477,11 @@
             </div>
         `).join('');
     }
-    window.onload = renderAll;
+
+    window.onload = function () {
+        initName();   // ✨ 初始化可编辑用户名
+        renderAll();
+    };
 </script>
 </body>
 </html>
